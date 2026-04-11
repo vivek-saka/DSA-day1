@@ -1,0 +1,30 @@
+class Solution {
+public:
+    int minimumDistance(vector<int>& nums) {
+        int n = nums.size();
+        // Map each value to list of indices where it appears
+        unordered_map<int, vector<int>> positions;
+        
+        // Group indices by their value
+        for (int i = 0; i < n; i++) {
+            positions[nums[i]].push_back(i);
+        }
+        
+        int minDist = INT_MAX;
+        
+        // For each value that appears at least 3 times
+        for (auto& [val, indices] : positions) {
+            if (indices.size() >= 3) {
+                // Check windows of 3 consecutive indices
+                for (int i = 0; i + 2 < indices.size(); i++) {
+                    int dist = 2 * (indices[i + 2] - indices[i]);
+                    if (dist < minDist) {
+                        minDist = dist;
+                    }
+                }
+            }
+        }
+        
+        return minDist == INT_MAX ? -1 : minDist;
+    }
+};
